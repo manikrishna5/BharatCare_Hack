@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import testRoutes from "./routes/testRoutes.js";
+import medicineRoutes from "./routes/medicineRoutes.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/test", testRoutes);
+app.use("/medicines", medicineRoutes);
 
 const PORT = process.env.PORT || 5000;
 
