@@ -1,18 +1,22 @@
 import api from "./axios";
 
-export const register = (
+export const login = async (email: string, password: string) => {
+  const res = await api.post("/api/auth/login", { email, password });
+  return res.data;
+};
+
+export const register = async (
   name: string,
   email: string,
   password: string,
-  role: "patient" | "doctor" | "pharmacy"
+  role: string
 ) => {
-  return api.post("/auth/register", {
+  const res = await api.post("/api/auth/register", {
     name,
     email,
     password,
     role,
   });
-};
 
 export const login = async (email: string, password: string) => {
   const res = await api.post("/auth/login", { email, password });

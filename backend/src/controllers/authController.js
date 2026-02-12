@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Doctor from "../models/Doctor.js";
 
 // REGISTER
 export const register = async (req, res) => {
@@ -25,9 +26,23 @@ export const register = async (req, res) => {
       role,
     });
 
+    // If doctor, automatically create doctor profile
+    if (role === "doctor") {
+      await Doctor.create({
+        userId: user._id,
+        specialization: "Not Provided",
+        isApproved: false,
+        availability: [],
+      });
+    }
+
     res.status(201).json({
-      message: "User registered successfully",
+      message:
+        role === "doctor"
+          ? "Doctor account created. Awaiting admin approval."
+          : "User registered successfully",
     });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -48,6 +63,22 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    if (user.role === "doctor") {
+      const doctorProfile = await Doctor.findOne({ userId: user._id });
+
+      if (!doctorProfile) {
+        return res.status(403).json({
+          message: "Doctor profile not created yet.",
+        });
+      }
+
+      if (!doctorProfile.isApproved) {
+        return res.status(403).json({
+          message: "Your account is under review by admin.",
+        });
+      }
+    }
+
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
@@ -57,7 +88,10 @@ export const login = async (req, res) => {
     res.json({
       token,
       role: user.role,
+      name: user.name,
+      email: user.email,
     });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

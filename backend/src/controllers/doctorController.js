@@ -29,7 +29,7 @@ export const createDoctorProfile = async (req, res) => {
 // GET /doctors/availability
 export const getDoctorsAvailability = async (req, res) => {
   try {
-    const doctors = await Doctor.find()
+    const doctors = await Doctor.find({ isApproved: true })
       .populate("userId", "name")
       .select("specialization available availability userId");
 
@@ -42,6 +42,31 @@ export const getDoctorsAvailability = async (req, res) => {
     }));
 
     res.json(response);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// PATCH /doctors/:id/approve
+export const approveDoctor = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id);
+    if (!doctor) return res.status(404).json({ message: "Doctor not found" });
+    
+    doctor.isApproved = true;
+    await doctor.save();
+    res.json({ message: "Doctor approved", doctor });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// GET /doctors/all (Admin only)
+export const getAllDoctorsAdmin = async (req, res) => {
+  try {
+    const doctors = await Doctor.find()
+      .populate("userId", "name email")
+      .select("specialization available isApproved userId createdAt");
+
+    res.json(doctors);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
