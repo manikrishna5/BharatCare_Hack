@@ -1,23 +1,21 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-// ❌ NOT IMPLEMENTED YET – KEEP COMMENTED
-// import VideoConsultation from "./pages/videoconsultation";
-// import UserConsult from "./pages/UserConsult";
-// import OrderHistory from "./pages/OrderHistory";
-// import UserDashboard from "./pages/UserDashboard";
-// import DoctorDashboard from "./pages/DoctorDashboard";
-// import PharmacyDashboard from "./pages/PharmacyDashboard";
-// import PatientVideoConsultation from "./pages/PatientVideoConsultation";
-// import Cart from "./pages/Cart";
-// import Checkout from "./pages/Checkout";
-// import Billing from "./pages/Billing";
-// import MyPrescriptions from "./pages/MyPrescriptions";
-// import UploadPrescription from "./pages/UploadPrescription";
-
+import VideoConsultation from "./pages/videoconsultation";
+import UserConsult from "./pages/UserConsult";
+import OrderHistory from "./pages/OrderHistory";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import UserDashboard from "./pages/UserDashboard";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import PharmacyDashboard from "./pages/PharmacyDashboard";
+import PatientVideoConsultation from "./pages/PatientVideoConsultation";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Billing from './pages/Billing';
 import Signup from "./pages/Signup";
+import MyPrescriptions from "./pages/MyPrescriptions";
+import UploadPrescription from "./pages/UploadPrescription";
+import AdminDashboard from "./pages/AdminDashboard";
 
 /* -------- ROLE GUARD -------- */
 const ProtectedRoute = ({
@@ -39,38 +37,34 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* PUBLIC ROUTES */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
-        {/* ----------------- NOT IMPLEMENTED YET ----------------- */}
-
-        {/*
-        <Route
-          path="/user"
-          element={
-            <ProtectedRoute role="patient">
-              <UserDashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="/user/prescriptions" element={<MyPrescriptions />} />
-        <Route
-          path="/user/upload-prescription"
-          element={<UploadPrescription />}
-        />
-
+<Route
+path="/user"
+element={
+  <ProtectedRoute role="patient">
+    <UserDashboard />
+  </ProtectedRoute>
+}
+/>
+<Route path="/user/prescriptions" element={<MyPrescriptions />} />
+<Route path="/admin/dashboard" element={<AdminDashboard />} />
+<Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+<Route path="/user/dashboard" element={<UserDashboard />} />
+<Route
+  path="/user/upload-prescription"
+  element={<UploadPrescription />}
+/>
+<Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/pharmacy/billing" element={<Billing />} />
+
         <Route path="/user/cart" element={<Cart />} />
         <Route path="/user/checkout" element={<Checkout />} />
-
         <Route
           path="/user/video-consult"
           element={<PatientVideoConsultation />}
         />
-
         <Route
           path="/doctor/video-consultation"
           element={
@@ -79,10 +73,12 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
         <Route path="/user/consult" element={<UserConsult />} />
+        <Route
+          path="/user/upload-prescription"
+          element={<UploadPrescription />}
+        />
         <Route path="/user/orders" element={<OrderHistory />} />
-
         <Route
           path="/doctor"
           element={
@@ -100,9 +96,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        */}
 
-        {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
